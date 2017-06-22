@@ -20,33 +20,41 @@ window.onload = function() {
 	});
 
 	function renderYear(year){
-		d3.select(".d3target").selectAll("svg")
+		var makeSvgs = d3.select(".d3target").selectAll("svg")
 		  .data(year)
 		  .enter()
 		  .append("svg")
-		  .text(function(d){return d.name;})
 		  .attr("width", function(d){
 		  	return getRadius(d) * 2;
 		  })
 			.attr("height", function(d){
 		  	return getRadius(d) * 2;
 			})
-			.append("circle")
+			.attr('data-name', function(d){return d.name})
+		var makeCircles = makeSvgs.append("circle")
 			.attr("cx", function(d){ return getRadius(d)})
 			.attr("cy", function(d){ return getRadius(d)})
 			.attr("r", function(d){ return getRadius(d)})
 			.style("fill", function(d){
 				if(d.sex == 'M'){ return 'blue'};
 				return 'pink';
-			});;
+			});
+
+		var makeLabels = makeSvgs
+		  .append("text")
+		  .text(function(d){return d.name})
+			.attr("x", function(d){ return getRadius(d)})
+			.attr("y", function(d){ return getRadius(d)})
+
+
 
 			function getRadius(nameObj){
-				var min = 5;
-				var max = 500;
-				var radius = nameObj.number / 100;
+				// var min = 5;
+				// var max = 500;
+				var radius = nameObj.number / 50;
 
-				if (radius > max){ return max.toString() }
-				if (radius < min){ return min.toString() }
+				// if (radius > max){ return max.toString() }
+				// if (radius < min){ return min.toString() }
 				return radius.toString();
 			}
 	}
