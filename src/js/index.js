@@ -9,35 +9,59 @@ require ('../css/style.css')
 
 const yob1880 = require('../../static/names_parsed/yob1880.json');
 
-var currentDisplayYear = 1880;
-var currentDisplaySex = 'M'
+var currentDisplayYear = '1880';
+var currentDisplaySex = 'M';
 
 window.onload = function() {
-	// console.log(yob1880);
 	registerInputListeners();
-		loadJSON( function(response) {
-			var actual_JSON = JSON.parse(response);
-			renderYear(actual_JSON);
-	 });
+	loadJSON( function(response) {
+		var actual_JSON = JSON.parse(response);
+		renderYear(actual_JSON);
+	});
 
 	function renderYear(year){
-		for (var i = year.length - 1; i >= 0; i--) {
-			makeNameCircle(year[i]);
-		}
-	}
+		d3.select(".d3target").selectAll("svg")
+		  .data(year)
+		  .enter()
+		  .append("svg")
+		  .text(function(d){return d.name;})
+		  .attr("width", function(d){
+		  	return getRadius(d) * 2;
+		  })
+			.attr("height", function(d){
+		  	return getRadius(d) * 2;
+			})
+			.append("circle")
+			.attr("cx", function(d){ return getRadius(d)})
+			.attr("cy", function(d){ return getRadius(d)})
+			.attr("r", function(d){ return getRadius(d)})
+			.style("fill", function(d){
+				if(d.sex == 'M'){ return 'blue'};
+				return 'pink';
+			});;
 
+			function getRadius(nameObj){
+				var min = 5;
+				var max = 500;
+				var radius = nameObj.number / 100;
+
+				if (radius > max){ return max.toString() }
+				if (radius < min){ return min.toString() }
+				return radius.toString();
+			}
+	}
 
 	function makeNameCircle(nameObj){
 		var color = nameObj.sex == 'F' ? 'pink' : 'blue';
 		d3.select(".d3target")
 			.append("svg")
-			.attr("width", 25)
-			.attr("height", 25)
+			.attr("width", 50)
+			.attr("height", 50)
 			.text(nameObj.name)
 			.append("circle")
-			.attr("cx", 10)
-			.attr("cy", 10)
-			.attr("r", 10)
+			.attr("cx", 25)
+			.attr("cy", 25)
+			.attr("r", 25)
 			.style("fill", color);
 	};
 
@@ -54,10 +78,9 @@ window.onload = function() {
 function loadJSON(callback) {   
 	var xobj = new XMLHttpRequest();
 			xobj.overrideMimeType("application/json");
-	xobj.open('GET', 'static/names_parsed/yob1880.json', true); // Replace 'my_data' with the path to your file
+	xobj.open('GET', 'static/names_parsed/yob1880.json', true);
 	xobj.onreadystatechange = function () {
 				if (xobj.readyState == 4 && xobj.status == "200") {
-					// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
 					callback(xobj.responseText);
 				}
 	};
