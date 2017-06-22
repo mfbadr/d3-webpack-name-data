@@ -9,6 +9,11 @@ body {
 .input-wrapper {
   color: white;
 }
+
+.input-wrapper h3 {
+  display: inline-block;
+
+}
 .name {
   margin: 0;
   display: inline-block;
