@@ -10,53 +10,97 @@ require ('../css/style.css')
 const yob1880 = require('../../static/names_parsed/yob1880.json');
 
 var currentDisplayYear = '1880';
-var currentDisplaySex = 'M';
+var currentDisplaySex = 'F';
 
 window.onload = function() {
 	registerInputListeners();
-	loadJSON( function(response) {
-		var actual_JSON = JSON.parse(response);
-		renderYear(actual_JSON);
+
+	// loadNameJSON(currentDisplayYear, function(response) {
+	// 	var actual_JSON = JSON.parse(response);
+	// 	renderYear(actual_JSON);
+	// });
+
+	d3.json("static/names_parsed/yob" + currentDisplayYear + ".json", function(data) {
+		renderYear()
 	});
 
-	function renderYear(year){
-		var makeSvgs = d3.select(".d3target").selectAll("svg")
-		  .data(year)
-		  .enter()
-		  .append("svg")
-		  .attr("width", function(d){
-		  	return getRadius(d) * 2;
-		  })
-			.attr("height", function(d){
-		  	return getRadius(d) * 2;
+
+
+
+	function renderYear(){
+		//just use global display name/ sex vars,
+		//get json clear and redraw here
+		d3.json("static/names_parsed/yob" + currentDisplayYear + ".json", function(data) {
+			//lets do the top 100 for now
+			data = data.filter(function(name){
+				return name.sex == currentDisplaySex;
 			})
-			.attr('data-name', function(d){return d.name})
-		var makeCircles = makeSvgs.append("circle")
-			.attr("cx", function(d){ return getRadius(d)})
-			.attr("cy", function(d){ return getRadius(d)})
-			.attr("r", function(d){ return getRadius(d)})
-			.style("fill", function(d){
-				if(d.sex == 'M'){ return 'blue'};
-				return 'pink';
-			});
+			drawYear(data.slice(0,100));
+		});
+		function drawYear(year){
+			var clearAll = d3.select('.d3target').selectAll("*").remove();
+		// 	var makeSvgs = d3.select(".d3target").selectAll("svg")
+		// 	  .data(year)
+		// 	  .enter()
+		// 	  .append('p')
+		// 	  .text(function(d){return d.name + ' (' + d.number + ')'})
+	 //      .attr("class", "name")
+	 //      .style("color", function(d){
 
-		var makeLabels = makeSvgs
-		  .append("text")
-		  .text(function(d){return d.name})
-			.attr("x", function(d){ return getRadius(d)})
-			.attr("y", function(d){ return getRadius(d)})
+	 //      })
+	 //      .style("font-size", function(d){ return getRadius(d)})
+
+			var makeSvgs = d3.select(".d3target").selectAll("svg")
+			  .data(year)
+			  .enter()
+			  .append("svg")
+			  .attr("width", function(d){
+			  	return getRadius(d) * 2;
+			  })
+				.attr("height", function(d){
+			  	return getRadius(d) * 2;
+				})
+				.attr('data-name', function(d){return d.name});
+
+			var makeCircles = makeSvgs.append("circle")
+				.attr("cx", function(d){ return getRadius(d)})
+				.attr("cy", function(d){ return getRadius(d)})
+				.attr("r", function(d){ return getRadius(d)})
+				.style("fill", function(d){
+	      	return d.sex == 'M' ? randomColor({hue:'blue', luminocity: 'dark'}) : randomColor({hue:'pink', luminocity:'dark'});
+				});
+
+			var makeNameLabels = makeSvgs
+			  .append("text")
+			  .text(function(d){return d.name})
+	      .attr("font-family", "sans-serif")
+	      .attr("text-anchor", "middle")
+	      .attr("font-size", "20px")
+				.attr("x", function(d){ return getRadius(d)})
+				.attr("y", function(d){ return getRadius(d)})
+
+			var makeNumberLabels = makeSvgs
+			  .append("text")
+			  .text(function(d){return d.number})
+	      .attr("font-family", "sans-serif")
+	      .attr("text-anchor", "middle")
+	      .attr("font-size", "20px")
+				.attr("x", function(d){ return getRadius(d)})
+				.attr("x", function(d){ return getRadius(d)})
+				.attr("y", function(d){ return getRadius(d) + 20})
+		}
+
+		function getRadius(nameObj){
+			var min = 10;
+			var max = 200;
+			// var radius = nameObj.number / 50;
+			var radius = Math.sqrt(nameObj.number);
 
 
-
-			function getRadius(nameObj){
-				// var min = 5;
-				// var max = 500;
-				var radius = nameObj.number / 50;
-
-				// if (radius > max){ return max.toString() }
-				// if (radius < min){ return min.toString() }
-				return radius.toString();
-			}
+			if (radius > max){ return max }
+			if (radius < min){ return min }
+			return radius;
+		}
 	}
 
 	function makeNameCircle(nameObj){
@@ -73,25 +117,41 @@ window.onload = function() {
 			.style("fill", color);
 	};
 
-
 	function registerInputListeners(){
 		$('#yearSelector').change(function(e){
-			debugger;
-			currentYear = e.currentTarget.value;
-			renderYear(currentYear);
-		})
+			//just change 'currentDisplayYear' and call render
+			currentDisplayYear = e.currentTarget.value;
+			$('#currentYear').html(currentDisplayYear);
+			renderYear();
+
+		});
+
+		$('#sexSelector').change(function(e){
+			//just change 'currentDisplaySex' and call render
+			currentDisplaySex = e.currentTarget.checked ? 'M' : 'F';
+			$('#currentSex').html(currentDisplaySex);
+			renderYear();
+
+			// d3.json("static/names_parsed/yob" + currentYear + ".json", function(data) {
+				// renderYear(data)
+			// });
+		});
+
 	}
+
+	function loadNameJSON(currentDisplayYear, callback) {
+		var xobj = new XMLHttpRequest();
+				xobj.overrideMimeType("application/json");
+				xobj.open('GET', 'static/names_parsed/yob' + currentDisplayYear + '.json', true);
+				xobj.onreadystatechange = function () {
+					if (xobj.readyState == 4 && xobj.status == "200") {
+						callback(xobj.responseText);
+					}
+		};
+		xobj.send(null);
+	}
+
 }
 
-function loadJSON(callback) {   
-	var xobj = new XMLHttpRequest();
-			xobj.overrideMimeType("application/json");
-	xobj.open('GET', 'static/names_parsed/yob1880.json', true);
-	xobj.onreadystatechange = function () {
-				if (xobj.readyState == 4 && xobj.status == "200") {
-					callback(xobj.responseText);
-				}
-	};
-	xobj.send(null);  
-}
+
 
