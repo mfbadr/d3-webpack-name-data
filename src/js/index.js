@@ -10,6 +10,8 @@ require ('../css/style.css')
 // const yob1880 = require('../../static/names_parsed/yob1880.json');
 var currentDisplayYear = '1880';
 var currentDisplaySex = 'F';
+var currentMinOccurances = 0;
+var currentMaxOccurances = Infinity;
 
 window.onload = function() {
 	registerInputListeners();
@@ -22,7 +24,7 @@ window.onload = function() {
 		});
 		function drawYear(year){
 			var clearAll = d3.select('.d3target').selectAll("*").remove();
-	// 	var makeSvgs = d3.select(".d3target").selectAll("svg")
+		// 	var makeSvgs = d3.select(".d3target").selectAll("svg")
 	// 	  .data(year)
 	// 	  .enter()
 	// 	  .append('p')
@@ -75,8 +77,6 @@ window.onload = function() {
 
 		function getRadius(nameObj){
 			var min = 20;
-			// var max = 200;
-			// var radius = nameObj.number / 50;
 			var radius = Math.sqrt((nameObj.number/Math.PI));
 
 			// if (radius > max){ return max }
@@ -85,10 +85,16 @@ window.onload = function() {
 		}
 	}
 
-
 	function filterData(data){
 		var filteredData = data.filter(function(name){
-			return name.sex == currentDisplaySex;
+			if( currentMaxOccurances == Infinity){
+				return name.sex == currentDisplaySex &&
+						 parseInt(name.number) >= parseInt(currentMinOccurances);
+			} else{
+				return name.sex == currentDisplaySex &&
+						 parseInt(name.number) >= parseInt(currentMinOccurances) &&
+						 parseInt(name.number) <= parseInt(currentMaxOccurances);
+			}
 		});
 		filteredData = filteredData.slice(0, 1000);
 		return filteredData;
@@ -110,26 +116,42 @@ window.onload = function() {
 
 	function registerInputListeners(){
 		$('#yearSelector').change(function(e){
-			//just change 'currentDisplayYear' and call render
 			currentDisplayYear = e.currentTarget.value;
 			$('#currentYear').html(currentDisplayYear);
 			renderYear();
-
 		});
 
 		$('#sexSelector').change(function(e){
-			//just change 'currentDisplaySex' and call render
 			currentDisplaySex = e.currentTarget.checked ? 'M' : 'F';
 			$('#currentSex').html(currentDisplaySex);
 			renderYear();
-
-			// d3.json("static/names_parsed/yob" + currentYear + ".json", function(data) {
-				// renderYear(data)
-			// });
 		});
 
-	}
+		$('#maxOccurancesInput').change(function(e){
+			// debugger;
+			if(e.currentTarget.value == ''){
+				currentMaxOccurances = Infinity;
+				$('#currentMaxOccurances').html('Unlimited');
+			} else {
+				currentMaxOccurances = e.currentTarget.value;
+				$('#currentMaxOccurances').html(currentMaxOccurances);
+			}
+			renderYear();
+		});
 
+		$('#minOccurancesInput').change(function(e){
+			// debugger;
+			if(e.currentTarget.value == ''){
+				currentMinOccurances = '0';
+				$('#currentMinOccurances').html(currentMinOccurances);
+			} else {
+				currentMinOccurances = e.currentTarget.value;
+				$('#currentMinOccurances').html(currentMinOccurances);
+			}
+			renderYear();
+		});
+	}
+}
 	// function loadNameJSON(currentDisplayYear, callback) {
 	// 	var xobj = new XMLHttpRequest();
 	// 			xobj.overrideMimeType("application/json");
@@ -141,8 +163,4 @@ window.onload = function() {
 	// 	};
 	// 	xobj.send(null);
 	// }
-
-}
-
-
 

@@ -2,15 +2,28 @@
   <script type='text/javascript' src="build/bundle.js"></script>
 </head>
 <body>
-  <div class="input-wrapper">
-    <label for="yearSelector">Select Year</label>
-    <input id='yearSelector' value='1880' type="range" min="1880" max="2013">
-    <h3 id='currentYear'>1880</h3>
-  </div>
-  <div class="input-wrapper">
-    <label for="sexSelector">Select gender</label>
-    <input id='sexSelector' type="checkbox">
-    <h3 id='currentSex'>F</h3>
+  <div class="controlers-wrapper">
+    <div class="input-wrapper">
+      <label for="maxOccurancesInput">Max occurances (min 5, leave blank for unlimited) </label>
+      <input id='maxOccurancesInput' type="number">
+      <h3 id='currentMaxOccurances'>Unlimited</h3>
+    </div>
+    <div class="input-wrapper">
+      <label for="minOccurancesInput">Min occurances</label>
+      <input id='minOccurancesInput' type="number" min="0" value=0>
+      <h3 id='currentMinOccurances'>0</h3>
+    </div>
+    <div class="input-wrapper">
+      <label for="yearSelector">Select Year</label>
+      <input id='yearSelector' value='1880' type="range" min="1880" max="2013">
+      <h3 id='currentYear'>1880</h3>
+    </div>
+    <div class="input-wrapper">
+      <label for="sexSelector">Select gender</label>
+      <input id='sexSelector' type="checkbox">
+      <h3 id='currentSex'>F</h3>
+      <h3 id='currentYear'>1880</h3>
+    </div>
   </div>
   <div class="d3target"></div>
 </body>
