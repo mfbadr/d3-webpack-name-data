@@ -4,7 +4,7 @@
 import * as d3 from "d3";
 import * as randomColor from "randomcolor";
 import * as $ from "jquery"
-require ('../css/style.css')
+require ('../css/style.scss')
 // var randomColor = require('randomcolor');
 
 // const yob1880 = require('../../static/names_parsed/yob1880.json');
@@ -118,13 +118,13 @@ window.onload = function() {
 		$('#yearSelector').change(function(e){
 			currentDisplayYear = e.currentTarget.value;
 			$('#currentYear').html(currentDisplayYear);
-			renderYear();
+			// renderYear();
 		});
 
 		$('#sexSelector').change(function(e){
 			currentDisplaySex = e.currentTarget.checked ? 'M' : 'F';
 			$('#currentSex').html(currentDisplaySex);
-			renderYear();
+			// renderYear();
 		});
 
 		$('#maxOccurancesInput').change(function(e){
@@ -136,8 +136,13 @@ window.onload = function() {
 				currentMaxOccurances = e.currentTarget.value;
 				$('#currentMaxOccurances').html(currentMaxOccurances);
 			}
-			renderYear();
+			// renderYear();
 		});
+
+
+		$('#renderYearButton').click(function(e){
+			renderYear();
+		})
 
 		$('#minOccurancesInput').change(function(e){
 			// debugger;
@@ -148,7 +153,7 @@ window.onload = function() {
 				currentMinOccurances = e.currentTarget.value;
 				$('#currentMinOccurances').html(currentMinOccurances);
 			}
-			renderYear();
+			// renderYear();
 		});
 	}
 }

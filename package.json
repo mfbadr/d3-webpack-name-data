@@ -15,7 +15,9 @@
     "express": "^4.14.1",
     "jquery": "^3.2.1",
     "morgan": "^1.8.1",
+    "node-sass": "^4.5.3",
     "randomcolor": "^0.4.4",
+    "sass-loader": "^6.0.6",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.1"
   },

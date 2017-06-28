@@ -1,0 +1,24 @@
+html, body {
+	margin: 0;
+	height: 100%;
+	background-color: black;
+}
+
+.control-panel {
+	padding: 2rem;
+	background-color: grey;
+	border-radius: 15px;
+	margin: 2rem;
+	.input-wrapper {
+		color: white;
+		h3{
+			display: inline-block;
+		}
+	}
+}
+
+.name {
+	margin: 0;
+	display: inline-block;
+	padding: 5px;
+}
