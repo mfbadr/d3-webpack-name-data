@@ -62,19 +62,6 @@ window.onload = function() {
 				.attr("x", function(d){ return getRadius(d)})
 				.attr("y", function(d){ return getRadius(d)})
 
-
-			var tooltip = makeCircles
-				.append('div')
-		    .style("position", "absolute")
-		    .style("z-index", "10")
-		    .style("visibility", "hidden")
-		    .text("a simple tooltip");
-
-		    makeCircles
-		    .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-				.on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-				.on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-
 			var makeNumberLabels = makeSvgs
 				.append("text")
 				.text(function(d){return d.number})
@@ -134,38 +121,20 @@ window.onload = function() {
 		return filteredData;
 	}
 
-	// function makeNameCircle(nameObj){
-	// 	var color = nameObj.sex == 'F' ? 'pink' : 'blue';
-	// 	d3.select(".d3target")
-	// 		.append("svg")
-	// 		.attr("width", 50)
-	// 		.attr("height", 50)
-	// 		.text(nameObj.name)
-	// 		.append("circle")
-	// 		.attr("cx", 25)
-	// 		.attr("cy", 25)
-	// 		.attr("r", 25)
-	// 		.style("fill", color);
-	// };
-
 	function registerInputListeners(){
 		$('#yearSelector').change(function(e){
 			currentDisplayYear = e.currentTarget.value;
-			$('#currentYear').html(currentDisplayYear);
 		});
 
 		$('#sexSelector').change(function(e){
 			currentDisplaySex = e.currentTarget.value;
-			$('#currentSex').html(currentDisplaySex);
 		});
 
 		$('#maxOccurancesInput').change(function(e){
 			if(e.currentTarget.value == ''){
 				currentMaxOccurances = Infinity;
-				// $('#currentMaxOccurances').html('Unlimited');
 			} else {
 				currentMaxOccurances = e.currentTarget.value;
-				$('#currentMaxOccurances').html(currentMaxOccurances);
 			}
 		});
 
@@ -176,10 +145,8 @@ window.onload = function() {
 		$('#minOccurancesInput').blur(function(e){
 			if(e.currentTarget.value == ''){
 				currentMinOccurances = '0';
-				$('#currentMinOccurances').html(currentMinOccurances);
 			} else {
 				currentMinOccurances = e.currentTarget.value;
-				$('#currentMinOccurances').html(currentMinOccurances);
 			}
 		});
 	}
