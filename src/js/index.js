@@ -19,23 +19,14 @@ window.onload = function() {
 
 	function renderYear(){
 		var mostPopularNameNumber;
-		d3.json("static/names_parsed/yob" + currentDisplayYear + ".json", function(data) {
+		enterLoadingState();
+		d3.json("static/names_parsed/yob" + currentDisplayYear + ".json", function(error, data) {
 			var filteredData = filterData(data);
+			exitLoadingState();
 			drawYear(filteredData);
 		});
+		//////
 		function drawYear(year){
-			var clearAll = d3.select('.d3target').selectAll("*").remove();
-		// 	var makeSvgs = d3.select(".d3target").selectAll("svg")
-	// 	  .data(year)
-	// 	  .enter()
-	// 	  .append('p')
-	// 	  .text(function(d){return d.name + ' (' + d.number + ')'})
-	//      .attr("class", "name")
-	//      .style("color", function(d){
-	// return d.sex == 'M' ? randomColor({hue:'blue', luminocity: 'dark'}) : randomColor({hue:'pink', luminocity:'dark'});
-	//      })
-	//      .style("font-size", function(d){ return getRadius(d)})
-
 			mostPopularNameNumber = year[0].number;
 			var makeSvgs = d3.select(".d3target").selectAll("svg")
 				.data(year)
@@ -117,6 +108,17 @@ window.onload = function() {
 		}
 	}
 
+	function enterLoadingState(){
+		var clearAll = d3.select('.d3target').selectAll("*").remove();
+		$('#renderYearButton').hide();
+		$('.spinner-wrapper').show();
+	}
+	function exitLoadingState(){
+		var clearAll = d3.select('.d3target').selectAll("*").remove();
+		$('#renderYearButton').show();
+		$('.spinner-wrapper').hide();
+	}
+
 	function filterData(data, limit){
 		var filteredData = data.filter(function(name){
 			if( currentMaxOccurances == Infinity){
@@ -150,35 +152,28 @@ window.onload = function() {
 		$('#yearSelector').change(function(e){
 			currentDisplayYear = e.currentTarget.value;
 			$('#currentYear').html(currentDisplayYear);
-			// renderYear();
 		});
 
 		$('#sexSelector').change(function(e){
-			// currentDisplaySex = e.currentTarget.checked ? 'M' : 'F';
 			currentDisplaySex = e.currentTarget.value;
 			$('#currentSex').html(currentDisplaySex);
-			// renderYear();
 		});
 
 		$('#maxOccurancesInput').change(function(e){
-			// debugger;
 			if(e.currentTarget.value == ''){
 				currentMaxOccurances = Infinity;
-				$('#currentMaxOccurances').html('Unlimited');
+				// $('#currentMaxOccurances').html('Unlimited');
 			} else {
 				currentMaxOccurances = e.currentTarget.value;
 				$('#currentMaxOccurances').html(currentMaxOccurances);
 			}
-			// renderYear();
 		});
-
 
 		$('#renderYearButton').click(function(e){
 			renderYear();
 		})
 
 		$('#minOccurancesInput').blur(function(e){
-			// debugger;
 			if(e.currentTarget.value == ''){
 				currentMinOccurances = '0';
 				$('#currentMinOccurances').html(currentMinOccurances);
@@ -186,19 +181,6 @@ window.onload = function() {
 				currentMinOccurances = e.currentTarget.value;
 				$('#currentMinOccurances').html(currentMinOccurances);
 			}
-			// renderYear();
 		});
 	}
 }
-	// function loadNameJSON(currentDisplayYear, callback) {
-	// 	var xobj = new XMLHttpRequest();
-	// 			xobj.overrideMimeType("application/json");
-	// 			xobj.open('GET', 'static/names_parsed/yob' + currentDisplayYear + '.json', true);
-	// 			xobj.onreadystatechange = function () {
-	// 				if (xobj.readyState == 4 && xobj.status == "200") {
-	// 					callback(xobj.responseText);
-	// 				}
-	// 	};
-	// 	xobj.send(null);
-	// }
-

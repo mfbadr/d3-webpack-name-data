@@ -20,18 +20,18 @@ html, body {
 		width: 60px;
 		height: 40px;
 		outline: 0;
-    border: 0;
+		border: 0;
 		border-bottom: 4px solid black;
-    background: 0;
-    font-size: 22px;
+		background: 0;
+		font-size: 22px;
 		&[type=range] {
 			display: inline-block;
 			max-width: 200px;
 		}
 		&[type=number]::-webkit-inner-spin-button,
 		&[type=number]::-webkit-outer-spin-button {
-		  -webkit-appearance: none;
-		  margin: 0;
+			-webkit-appearance: none;
+			margin: 0;
 		}
 		&::placeholder {
 			color: black;
@@ -67,13 +67,13 @@ html, body {
 			background-color: #2196F3;
 
 			&:before {
-			  -webkit-transform: translateX(26px);
-			  -ms-transform: translateX(26px);
-			  transform: translateX(26px);
+				-webkit-transform: translateX(26px);
+				-ms-transform: translateX(26px);
+				transform: translateX(26px);
 			}
 		}
 		&:focus + .toggelSlider {
-  		box-shadow: 0 0 1px #2196F3;
+			box-shadow: 0 0 1px #2196F3;
 		}
 	}
 
@@ -104,3 +104,21 @@ html, body {
 
 	}
 }
+
+.spin {
+	animation: spin;
+	animation-name: spin;
+	animation-duration: 5000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear; 
+}
+
+@keyframes spin {
+		from {
+				transform:rotate(0deg);
+		}
+		to {
+				transform:rotate(360deg);
+		}
+}
+
