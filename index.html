@@ -5,35 +5,39 @@
 </head>
 <body>
 	<div class="container-fluid">
-	  <div class="control-panel">
-	    <div class="inputs-wrapper">
-	      <div class="input-wrapper">
-	        <label for="maxOccurancesInput">Max occurances (min 5, leave blank for unlimited) </label>
-	        <input id='maxOccurancesInput' type="number">
-	        <h3 id='currentMaxOccurances'>Unlimited</h3>
-	      </div>
-	      <div class="input-wrapper">
-	        <label for="minOccurancesInput">Min occurances</label>
-	        <input id='minOccurancesInput' type="number" min="0" value=0>
-	        <h3 id='currentMinOccurances'>0</h3>
-	      </div>
-	      <div class="input-wrapper">
-	        <label for="yearSelector">Select Year</label>
-	        <input id='yearSelector' value='1880' type="range" min="1880" max="2016">
-	        <h3 id='currentYear'>1880</h3>
-	      </div>
-	      <div class="input-wrapper">
-		        <label for="sexSelector" class="toggleSwitch">
-		        <input id='sexSelector' type="checkbox">
-	        <div class="toggleSlider"></div>
-	        </label>
-	        <h3 id='currentSex'>F</h3>
+		<div class="control-panel">
+			<div class="row">
+				<div class="col-xs-12 text-center">
+					<h1 class="display-4">
+						U.S. Name Popularity from 1880-2016
+					</h1>
+				</div>
+				<div class="cox-xs-12">
+					<div class="sentence-input-wrapper text-center">
+						<span class="sentence-input-text">Show me the</span>
+						<input type="number" value='1000' class="sentence-input-field" id="namesToDisplay" disabled >
+						<span class="sentence-input-text">most popular</span>
+						<select name="sexSelectorDropdown" id="sexSelector">
+							<option value="F">Girls'</option>
+							<option value="M">Boys'</option>
+						</select>
+						<span class="sentence-input-text">names from</span>
+						<input type="text" value='1880' class="sentence-input-field" id="yearSelector">
+						<span class="sentence-input-text">names with between</span>
+						<input type="number" value=0 class="sentence-input-field" id="minOccurancesInput">
+						<span class="sentence-input-text">and</span>
+						<input type="number" class="sentence-input-field" id="maxOccurancesInput" placeholder="unlimited">
+						<span class="sentence-input-text">occurances (min 5, leave blank for unlimited).</span>
 
-	      </div>
-	    </div> <!-- end inputs -wrapper -->
-	    <div class="button-wrapper">
-	      <button id="renderYearButton">Go</button>
-	    </div>
-	  <div class="d3target"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="button-wrapper">
+				<button id="renderYearButton" class="btn btn-primary btn-lg">Go</button>
+			</div>
+
+		</div>
+		<div class="d3target"></div>
 	</div>
 </body>
