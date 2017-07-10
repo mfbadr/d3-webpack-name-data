@@ -1,7 +1,7 @@
 html, body {
 	margin: 0;
 	height: 100%;
-	background-color: black;
+	background-color: #FFF;
 }
 
 .control-panel {
@@ -10,10 +10,43 @@ html, body {
 	border-radius: 15px;
 	margin: 2rem;
 	.input-wrapper {
-		color: white;
+		// color: bl;
 		h3{
 			display: inline-block;
 		}
+	}
+
+	input {
+		width: 60px;
+		height: 40px;
+		outline: 0;
+    border: 0;
+		border-bottom: 4px solid black;
+    background: 0;
+    font-size: 22px;
+		&[type=range] {
+			display: inline-block;
+			max-width: 200px;
+		}
+		&[type=number]::-webkit-inner-spin-button,
+		&[type=number]::-webkit-outer-spin-button {
+		  -webkit-appearance: none;
+		  margin: 0;
+		}
+		&::placeholder {
+			color: black;
+		}
+
+		&#maxOccurancesInput 	{
+			width: 100px;
+		}
+	}
+
+	#renderYearButton {
+		display: block;
+		margin: 0 auto;
+		margin-top: 2rem;
+		min-width: 200px;
 	}
 }
 
